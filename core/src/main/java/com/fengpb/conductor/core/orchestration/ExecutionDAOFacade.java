@@ -1,10 +1,13 @@
 package com.fengpb.conductor.core.orchestration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fengpb.conductor.common.metadata.tasks.Task;
 import com.fengpb.conductor.common.run.Workflow;
 import com.fengpb.conductor.core.dao.ExecutionDAO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Slf4j
 @Component
@@ -29,6 +32,14 @@ public class ExecutionDAOFacade {
         workflow.setUpdateTime(System.currentTimeMillis());
         executionDAO.updateWorkflow(workflow);
         return workflow.getWorkflowId();
+    }
+
+    public void updateTask(Task task) {
+
+    }
+
+    public List<Task> createTasks(List<Task> task) {
+        return null;
     }
 
     public void removeWorkflow(String workflowId, boolean archiveWorkflow) {

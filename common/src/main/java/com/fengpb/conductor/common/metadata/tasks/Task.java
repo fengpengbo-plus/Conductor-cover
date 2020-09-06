@@ -1,5 +1,6 @@
 package com.fengpb.conductor.common.metadata.tasks;
 
+import com.fengpb.conductor.common.metadata.workflow.WorkflowTask;
 import lombok.Data;
 
 import java.util.HashMap;
@@ -52,4 +53,14 @@ public class Task {
     private String referenceTaskName;
 
     private String taskDefName;
+
+    private WorkflowTask workflowTask;
+
+    private String taskType;
+
+    private long startTime;
+
+    private long endTime;
+
+    private String taskId;
 }

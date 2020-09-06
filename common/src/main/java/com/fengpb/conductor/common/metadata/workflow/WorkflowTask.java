@@ -39,4 +39,6 @@ public class WorkflowTask {
     private Map<String, Object> inputParameters = new HashMap<>();
 
     private TaskDef taskDefinition;
+
+    private boolean asyncComplete = false;
 }
