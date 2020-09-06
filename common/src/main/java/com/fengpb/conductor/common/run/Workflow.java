@@ -1,5 +1,6 @@
 package com.fengpb.conductor.common.run;
 
+import com.fengpb.conductor.common.metadata.Auditable;
 import com.fengpb.conductor.common.metadata.workflow.WorkflowDef;
 import lombok.Data;
 
@@ -7,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Data
-public class Workflow {
+public class Workflow extends Auditable {
     public enum  WorkflowStatus {
         RUNNING(false, false),
         COMPLETED(true, true),

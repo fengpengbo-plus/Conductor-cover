@@ -15,7 +15,7 @@ import java.util.Map.Entry;
 
 @Slf4j
 @Component
-public class ParameterUtils {
+public class ParametersUtils {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
