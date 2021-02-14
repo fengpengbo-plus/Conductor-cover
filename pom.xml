@@ -18,6 +18,8 @@
         <module>server</module>
         <module>client</module>
         <module>common</module>
+        <module>mysql-persistence</module>
+        <module>local-persistence</module>
     </modules>
     <packaging>pom</packaging>
     <dependencyManagement>

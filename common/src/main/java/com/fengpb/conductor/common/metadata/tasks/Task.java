@@ -50,17 +50,33 @@ public class Task {
 
     private Map<String, Object> inputData = new HashMap<>();
 
+    private Map<String, Object> outputData = new HashMap<>();
+
     private String referenceTaskName;
 
     private String taskDefName;
 
     private WorkflowTask workflowTask;
 
+    private String workflowInstanceId;
+
+    private String workerId;
+
     private String taskType;
 
     private long startTime;
 
+    private long scheduledTime;
+
     private long endTime;
 
+    private long updateTime;
+
     private String taskId;
+
+    private boolean executed;
+
+    private int seq;
+
+    private String reasonForIncompletion;
 }

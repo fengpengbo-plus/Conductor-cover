@@ -1,2 +1,18 @@
 server:
   port: 8090
+spring:
+  datasource:
+    url: jdbc:mysql://47.97.118.103:3306/conductor-cover?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: root
+    password: dilidiliYgdxg2323-
+    driver-class-name: com.mysql.cj.jdbc.Driver
+redis:
+  hostPorts:
+    - 47.97.118.103:3690
+  password: Ygdxg2323
+mybatis:
+  type-handlers-package: com.fengpb.conductor.dao
+
+logging:
+  level:
+    com.fengpb.conductor: debug

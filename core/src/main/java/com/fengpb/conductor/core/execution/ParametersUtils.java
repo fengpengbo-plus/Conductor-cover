@@ -1,7 +1,11 @@
 package com.fengpb.conductor.core.execution;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fengpb.conductor.common.metadata.tasks.Task;
+import com.fengpb.conductor.common.metadata.tasks.TaskDef;
+import com.fengpb.conductor.common.run.Workflow;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
@@ -10,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONArray;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -191,7 +196,55 @@ public class ParametersUtils {
         return retObj;
     }
 
+    public Map<String, Object> getTaskInput(Map<String, Object> input, Workflow workflow, String taskId) {
+        Map<String, Object> inputParams;
+        if (input != null) {
+            inputParams = clone(input);
+        } else {
+            inputParams = new HashMap<>();
+        }
+        Map<String, Map<String, Object>> inputMap = new HashMap<>();
+        Map<String, Object> workflowParams = new HashMap<>();
+        workflowParams.put("input", workflow.getInput());
+        workflowParams.put("output", workflow.getOutput());
+        workflowParams.put("status", workflow.getStatus());
+        workflowParams.put("workflowId", workflow.getWorkflowId());
+        workflowParams.put("workflowType", workflow.getWorkflowName());
+
+        inputMap.put("workflow", workflowParams);
+
+        workflow.getTasks().stream()
+                .map(Task::getReferenceTaskName)
+                .map(workflow::getTaskByRefName)
+                .forEach(task -> {
+                    Map<String, Object> taskParams = new HashMap<>();
+                    taskParams.put("input", task.getInputData());
+                    taskParams.put("output", task.getOutputData());
+                    taskParams.put("taskType", task.getTaskType());
+                    if (task.getStatus() != null) {
+                        taskParams.put("status", task.getStatus().toString());
+                    }
+                    taskParams.put("referenceTaskName", task.getReferenceTaskName());
+                    taskParams.put("taskDefName", task.getTaskDefName());
+                    taskParams.put("startTime", task.getStartTime());
+                    taskParams.put("endTime", task.getEndTime());
+                    taskParams.put("taskId", task.getTaskId());
+                    inputMap.put(task.getReferenceTaskName(), taskParams);
+                });
+
+        Configuration option = Configuration.defaultConfiguration()
+                .addOptions(Option.SUPPRESS_EXCEPTIONS);
+        DocumentContext documentContext = JsonPath.parse(inputMap, option);
+        Map<String, Object> replacedTaskInput = replace(inputParams, documentContext, taskId);
+        return replacedTaskInput;
+    }
+
     private Map<String, Object> clone(Map<String, Object> inputTemplate) {
-        return null;
+        try {
+            byte[] bytes = objectMapper.writeValueAsBytes(inputTemplate);
+            return objectMapper.readValue(bytes,map);
+        } catch (IOException e) {
+            throw new RuntimeException("无法克隆输入参数", e);
+        }
     }
 }

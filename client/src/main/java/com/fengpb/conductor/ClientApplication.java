@@ -1,4 +1,4 @@
-package com.fengpb.conductor.client;
+package com.fengpb.conductor;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
